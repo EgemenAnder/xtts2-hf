@@ -42,16 +42,16 @@ def prepare_and_generate_speech(sentences, directory_path, batch_index):
     for index, sentence in enumerate(sentences):
         if sentence:
             out = model.inference(sentence, "tr", gpt_cond_latent, speaker_embedding)
-            audio_output_path = os.path.join(directory_path, f"{batch_index * 10 + index + 1}.wav")
+            audio_output_path = os.path.join(directory_path, f"{batch_index * 5 + index + 1}.wav")
             torchaudio.save(audio_output_path, torch.tensor(out["wav"]).unsqueeze(0), 24000)
             print(f"Saved: {audio_output_path}")
 
-# Process text file and generate speech in batches of 10 sentences
+# Process text file and generate speech in batches of 5 sentences
 def process_text_file_and_generate_speech(file_path):
     sentences = read_text_and_split_into_sentences(file_path)
     directory_path = create_date_directory()
-    for i in range(0, len(sentences), 10):
-        prepare_and_generate_speech(sentences[i:i+10], directory_path, i // 10)
+    for i in range(0, len(sentences), 5):
+        prepare_and_generate_speech(sentences[i:i+5], directory_path, i // 5)
 
 # Specify the path to your text file
 text_file_path = '/content/aa.txt'
