@@ -20,11 +20,28 @@ model.load_checkpoint(config, checkpoint_path=os.path.join(model_path, "model.pt
 model.cuda()
 
 # Function to read text from a file and split into sentences
+#def read_text_and_split_into_sentences(file_path):
+#    with open(file_path, 'r', encoding='utf-8') as file:
+#        text = file.read()
+#    sentences = text.split('.')
+#    return [sentence.strip() for sentence in sentences if sentence]
+
 def read_text_and_split_into_sentences(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         text = file.read()
+
+    # Splitting the text by period to get sentences
     sentences = text.split('.')
-    return [sentence.strip() for sentence in sentences if sentence]
+    cleaned_sentences = [sentence.strip() for sentence in sentences if sentence.strip()]
+
+    # Creating a list to store chunks of up to 20 sentences each
+    sentence_chunks = []
+    for i in range(0, len(cleaned_sentences), 20):
+        # Append chunks of 20 sentences (or fewer, if less than 20 remain)
+        sentence_chunks.append(cleaned_sentences[i:i+20])
+
+    return sentence_chunks
+
 
 # Create a directory for today's date in the temp directory
 def create_date_directory():
